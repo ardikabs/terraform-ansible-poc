@@ -13,7 +13,7 @@ setup(
     author=__author__,
     author_email=__email__,
     url=__url__,
-    install_requires=['click'],
+    install_requires=['click', 'fabric', 'click_configfile'],
     include_package_data=True,
     packages=find_packages(),
     entry_points='''

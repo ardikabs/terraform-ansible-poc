@@ -30,7 +30,7 @@ resource "null_resource" "cmd" {
   triggers {
     template_rendered = "${data.template_file.inventory.rendered}"
   }
-
+  
   provisioner "local-exec" {
     command = "echo '${data.template_file.inventory.rendered}' > ${var.ansible_dir}/inventory.ini"
   }
@@ -42,5 +42,12 @@ resource "null_resource" "cmd" {
   provisioner "local-exec" {
     when    = "destroy"
     command = "echo '' > ../ansible/inventory.ini && echo '{}' > ${var.instance_state_file}"
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      cd ${var.ansible_dir} && \
+      ansible-playbook -i inventory.ini --private-key ${var.ssh_private_key} setup.playbook.yml
+    EOT
   }
 }

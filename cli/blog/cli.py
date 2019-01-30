@@ -44,8 +44,8 @@ def cli(ctx, config_path):
     ctx.obj["CONFIG"] = config
     ctx.obj["CONFIG_PATH"] = cfp.config_path
     ctx.obj["DIGITAL_OCEAN_TOKEN"] = config["cloud"]["token"]
-    ctx.obj["SSH_DIRECTORY"] = config["ssh"]["ssh_dir"][:-1] \
-                                if config["ssh"]["ssh_dir"].endswith("/") else config["ssh"]["ssh_dir"]
+    ctx.obj["SSH_PUBLIC_KEY"] = config["ssh"]["ssh_public_key"]
+    ctx.obj["SSH_PRIVATE_KEY"] = config["ssh"]["ssh_private_key"]
     ctx.obj["INITIAL_SWARM_CLUSTER_MANAGERS"] = config["swarm_cluster"]["managers"]
     ctx.obj["INITIAL_SWARM_CLUSTER_WORKERS"] = config["swarm_cluster"]["workers"]
 

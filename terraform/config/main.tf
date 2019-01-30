@@ -4,7 +4,7 @@ provider "digitalocean" {
 
 resource "digitalocean_ssh_key" "ssh" {
   name       = "Blog"
-  public_key = "${file("${var.ssh_dir}/id_rsa.pub")}"
+  public_key = "${file(var.ssh_public_key)}"
 }
 
 resource "digitalocean_droplet" "managers" {
@@ -18,6 +18,14 @@ resource "digitalocean_droplet" "managers" {
   region   = "sgp1"
   size     = "s-1vcpu-2gb"
   ssh_keys = ["${digitalocean_ssh_key.ssh.fingerprint}"]
+
+  provisioner "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "root"
+      private_key = "${file(var.ssh_private_key)}"
+    }
+  }
 }
 
 resource "digitalocean_droplet" "workers" {
@@ -31,4 +39,12 @@ resource "digitalocean_droplet" "workers" {
   region   = "sgp1"
   size     = "s-1vcpu-1gb"
   ssh_keys = ["${digitalocean_ssh_key.ssh.fingerprint}"]
+
+  provisioner "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "root"
+      private_key = "${file(var.ssh_private_key)}"
+    }
+  }
 }

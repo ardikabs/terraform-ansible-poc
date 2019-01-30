@@ -22,7 +22,8 @@ class ConfigSectionSchema(object):
 
     @matches_section("ssh")
     class SSH(SectionSchema):
-        ssh_dir = Param(type=str)
+        ssh_public_key = Param(type=click.Path(exists=True))
+        ssh_private_key = Param(type=click.Path(exists=True))
 
     @matches_section("cloud")
     class Cloud(SectionSchema):
