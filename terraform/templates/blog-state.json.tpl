@@ -1,0 +1,4 @@
+{
+    "managers": [${managers}],
+    "workers": [${workers}]
+}

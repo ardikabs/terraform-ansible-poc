@@ -1,0 +1,11 @@
+---
+# tasks file for swarm_worker
+- name: Join Swarm Cluster as a Worker
+  command: docker swarm join --token {{ token }} {{ manager }}:2377
+  register: worker
+  failed_when: false
+  ignore_errors: yes
+  
+- name: Show Results
+  when: worker.rc == 0
+  debug: var=worker.stdout

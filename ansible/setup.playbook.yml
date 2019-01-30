@@ -1,0 +1,30 @@
+---
+- name: Activated Python
+  hosts: managers:workers
+  gather_facts: False
+  tasks:
+    - name: Create a Symlink
+      raw: "ln -sf /usr/bin/python3 /usr/bin/python"
+      changed_when: False
+
+        
+- name: Setup Docker
+  hosts: managers:workers
+  gather_facts: False
+  roles:
+  - docker
+  
+- name: Init Swarm Cluster
+  hosts: managers
+  gather_facts: False
+  roles:
+  - swarm_manager
+      
+- name: Join Swarm Cluster
+  hosts: workers
+  gather_facts: False
+  vars:
+    token: "{{ hostvars[groups['managers'][0]]['worker_token']['stdout'] }}"
+    manager: "{{ hostvars[groups['managers'][0]]['inventory_hostname'] }}"
+  roles:
+  - swarm_worker
